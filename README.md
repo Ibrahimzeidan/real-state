@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Local Setup
 
 ### 1. Clone the repository
@@ -59,3 +60,57 @@ npm run dev
 ```
 
 ---
+=======
+# PrimeNest Estates Monorepo
+
+This repository contains the frontend and backend applications for PrimeNest Estates.
+
+## Structure
+
+```text
+.
+|-- frontend/
+|   |-- public/          # Static assets
+|   |-- src/
+|   |   |-- app/         # Next.js App Router pages and API routes
+|   |   |-- components/  # Shared UI and feature components
+|   |   |-- hooks/       # Reusable React hooks
+|   |   |-- lib/         # Utilities, auth helpers, db access, validation
+|   |   |-- models/      # Mongoose models used by the frontend app
+|   |   |-- services/    # Client-facing service helpers
+|   |   |-- styles/      # Additional stylesheet assets
+|   |   `-- middleware.ts
+|   `-- package.json
+|-- backend/
+|   |-- src/
+|   |   |-- config/      # Environment and database configuration
+|   |   |-- middlewares/ # Express middleware
+|   |   |-- models/      # Mongoose models
+|   |   |-- routes/      # API route modules
+|   |   |-- services/    # Backend services
+|   |   `-- utils/       # Shared backend utilities
+|   `-- package.json
+`-- package.json         # Workspace helper scripts
+```
+
+## Getting Started
+
+### Frontend
+
+```bash
+npm run frontend:dev
+```
+
+### Backend
+
+```bash
+npm run backend:dev
+```
+
+## Environment Files
+
+- `frontend/.env`
+- `backend/.env`
+
+Use the included `.env.example` files as templates when setting up a new environment.
+>>>>>>> 8eefceb (Added static admin system and protected admin route)
