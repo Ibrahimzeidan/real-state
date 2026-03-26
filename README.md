@@ -38,6 +38,8 @@ PORT=4000
 MONGODB_URI=you mongodb connection
 MONGODB_DB=cms
 JWT_SECRET=EBDA605279DFA0AA53DEBD5F5A10633F748E0927AE4DC89FDC444A9A02C14C51
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin123
 JWT_EXPIRES_IN=7d
 BCRYPT_SALT_ROUNDS=12
 CORS_ORIGIN=http://localhost:3000
@@ -111,6 +113,10 @@ npm run backend:dev
 
 - `frontend/.env`
 - `backend/.env`
+- ### ADMIN
+- log in with the credetials
+- ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin123
 
 Use the included `.env.example` files as templates when setting up a new environment.
 >>>>>>> 8eefceb (Added static admin system and protected admin route)
