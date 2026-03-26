@@ -1,0 +1,23 @@
+export const Roles = {
+  ADMIN: "ADMIN",
+  BLOG_EDITOR: "BLOG_EDITOR",
+  PROJECT_EDITOR: "PROJECT_EDITOR",
+  VIEWER: "VIEWER",
+} as const;
+
+export type Role = (typeof Roles)[keyof typeof Roles];
+
+export const ROLE_OPTIONS = [
+  Roles.ADMIN,
+  Roles.BLOG_EDITOR,
+  Roles.PROJECT_EDITOR,
+  Roles.VIEWER,
+] as const;
+
+export function checkPermission(userRole: Role, required: Role | Role[]) {
+  if (userRole === Roles.ADMIN) {
+    return true;
+  }
+  const requiredRoles = Array.isArray(required) ? required : [required];
+  return requiredRoles.includes(userRole);
+}

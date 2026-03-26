@@ -1,0 +1,319 @@
+﻿{
+  "info": {
+    "name": "Ibrahim Company Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "blogId", "value": "" },
+    { "key": "projectId", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /api/auth/register",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"API Test\",\n  \"email\": \"api_test_123@example.com\",\n  \"password\": \"Pass12345\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) pm.environment.set('token', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /api/auth/login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api_test_123@example.com\",\n  \"password\": \"Pass12345\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) pm.environment.set('token', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/auth/me",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/auth/me"
+          }
+        },
+        {
+          "name": "POST /api/auth/logout",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blogs",
+      "item": [
+        {
+          "name": "GET /api/blogs",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/blogs"
+          }
+        },
+        {
+          "name": "POST /api/blogs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Blog\",\n  \"content\": \"Hello world\",\n  \"image\": \"https://example.com/image.jpg\"\n}"
+            },
+            "url": "{{baseUrl}}/api/blogs"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.data && json.data._id) pm.environment.set('blogId', json.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/blogs/:id",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/blogs/{{blogId}}"
+          }
+        },
+        {
+          "name": "PUT /api/blogs/:id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Blog\"\n}"
+            },
+            "url": "{{baseUrl}}/api/blogs/{{blogId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/blogs/:id",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/blogs/{{blogId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "GET /api/projects",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects"
+          }
+        },
+        {
+          "name": "POST /api/projects",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Project A\",\n  \"description\": \"Description here\",\n  \"images\": [\"https://example.com/a.jpg\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/projects"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.data && json.data._id) pm.environment.set('projectId', json.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/projects/:id",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/{{projectId}}"
+          }
+        },
+        {
+          "name": "PUT /api/projects/:id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Project\"\n}"
+            },
+            "url": "{{baseUrl}}/api/projects/{{projectId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/projects/:id",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/projects/{{projectId}}"
+          }
+        },
+        {
+          "name": "POST /api/projects/:id/interest",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Interested User\",\n  \"email\": \"user@example.com\",\n  \"message\": \"Tell me more\"\n}"
+            },
+            "url": "{{baseUrl}}/api/projects/{{projectId}}/interest"
+          }
+        },
+        {
+          "name": "GET /api/projects/:id/interest",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/projects/{{projectId}}/interest"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "POST /api/contact",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"API Test\",\n  \"email\": \"api_test_123@example.com\",\n  \"message\": \"Hello from Postman\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact"
+          }
+        },
+        {
+          "name": "GET /api/contact",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/contact"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "GET /api/content/:page",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/api/content/home"
+          }
+        },
+        {
+          "name": "PUT /api/content/:page",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": {\n    \"heroTitle\": \"Welcome\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/content/home"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit",
+      "item": [
+        {
+          "name": "GET /api/audit",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/audit"
+          }
+        }
+      ]
+    }
+  ]
+}
