@@ -28,8 +28,9 @@ function makeExcerpt(content: string, length = 140) {
 export default async function BlogPage() {
   await connectToDatabase();
   const blogs = await Blog.find().sort({ createdAt: -1 }).lean();
+  const safeBlogs = Array.isArray(blogs) ? blogs : [];
 
-  const items = blogs.map((post: any) => ({
+  const items = safeBlogs.map((post: any) => ({
     id: post._id.toString(),
     title: post.title,
     excerpt: makeExcerpt(post.content || ""),

@@ -56,8 +56,9 @@ export async function GET(req: NextRequest) {
         .lean(),
       User.countDocuments(filter),
     ]);
+    const safeUsers = Array.isArray(users) ? users : [];
 
-    const data = users.map((user: any) => ({
+    const data = safeUsers.map((user: any) => ({
       id: user._id.toString(),
       name: user.name,
       email: user.email,

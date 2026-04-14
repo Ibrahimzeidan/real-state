@@ -127,13 +127,14 @@ function ChartTooltipContent({
     labelKey?: string
   }) {
   const { config } = useChart()
+  const safePayload = Array.isArray(payload) ? payload : []
 
   const tooltipLabel = React.useMemo(() => {
-    if (hideLabel || !payload?.length) {
+    if (hideLabel || !safePayload.length) {
       return null
     }
 
-    const [item] = payload
+    const [item] = safePayload
     const key = `${labelKey || item?.dataKey || item?.name || 'value'}`
     const itemConfig = getPayloadConfigFromPayload(config, item, key)
     const value =
@@ -157,18 +158,18 @@ function ChartTooltipContent({
   }, [
     label,
     labelFormatter,
-    payload,
+    safePayload,
     hideLabel,
     labelClassName,
     config,
     labelKey,
   ])
 
-  if (!active || !payload?.length) {
+  if (!active || !safePayload.length) {
     return null
   }
 
-  const nestLabel = payload.length === 1 && indicator !== 'dot'
+  const nestLabel = safePayload.length === 1 && indicator !== 'dot'
 
   return (
     <div
@@ -179,7 +180,7 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {safePayload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
           const indicatorColor = color || item.payload.fill || item.color
@@ -262,8 +263,9 @@ function ChartLegendContent({
     nameKey?: string
   }) {
   const { config } = useChart()
+  const safePayload = Array.isArray(payload) ? payload : []
 
-  if (!payload?.length) {
+  if (!safePayload.length) {
     return null
   }
 
@@ -275,7 +277,7 @@ function ChartLegendContent({
         className,
       )}
     >
-      {payload.map((item) => {
+      {safePayload.map((item) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 

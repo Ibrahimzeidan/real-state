@@ -18,5 +18,6 @@ export function jsonOk<T>(data: T, status = 200) {
 }
 
 export function zodErrorToMessage(error: ZodError) {
-  return error.errors.map((issue) => issue.message).join(", ");
+  const issues = Array.isArray(error?.errors) ? error.errors : [];
+  return issues.map((issue) => issue.message).join(", ");
 }

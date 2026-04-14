@@ -34,7 +34,7 @@ type NavItem = {
 type EditorSidebarProps = {
   title: string;
   subtitle?: string;
-  navItems: NavItem[];
+  navItems?: NavItem[];
   user?: { name?: string | null; email?: string | null };
 };
 
@@ -45,6 +45,7 @@ export function EditorSidebar({
   user,
 }: EditorSidebarProps) {
   const pathname = usePathname();
+  const safeNavItems = Array.isArray(navItems) ? navItems : [];
 
   const profileName = user?.name || "Editor";
   const profileEmail = user?.email || "editor@example.com";
@@ -63,7 +64,7 @@ export function EditorSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href={navItems[0]?.url || "/"}>
+              <Link href={safeNavItems[0]?.url || "/"}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Building2 className="size-4" />
                 </div>
@@ -84,7 +85,7 @@ export function EditorSidebar({
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => {
+              {safeNavItems.map((item) => {
                 const Icon =
                   item.icon === "blog"
                     ? FileText

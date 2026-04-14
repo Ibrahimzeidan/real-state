@@ -209,6 +209,15 @@ export default async function AdminDashboardPage() {
       .populate("actorId", "name email")
       .lean(),
   ]);
+  const safeUserRows = Array.isArray(userRows) ? userRows : [];
+  const safeContactRows = Array.isArray(contactRows) ? contactRows : [];
+  const safeInterestRows = Array.isArray(interestRows) ? interestRows : [];
+  const safeBlogRows = Array.isArray(blogRows) ? blogRows : [];
+  const safeNewsRows = Array.isArray(newsRows) ? newsRows : [];
+  const safeProjectRows = Array.isArray(projectRows) ? projectRows : [];
+  const safePageRows = Array.isArray(pageRows) ? pageRows : [];
+  const safeServiceRows = Array.isArray(serviceRows) ? serviceRows : [];
+  const safeAuditRows = Array.isArray(auditRows) ? auditRows : [];
 
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
@@ -241,6 +250,12 @@ export default async function AdminDashboardPage() {
       .select("createdAt")
       .lean(),
   ]);
+  const safeBlogDates = Array.isArray(blogDates) ? blogDates : [];
+  const safeNewsDates = Array.isArray(newsDates) ? newsDates : [];
+  const safeProjectDates = Array.isArray(projectDates) ? projectDates : [];
+  const safePageDates = Array.isArray(pageDates) ? pageDates : [];
+  const safeContactDates = Array.isArray(contactDates) ? contactDates : [];
+  const safeInterestDates = Array.isArray(interestDates) ? interestDates : [];
 
   const days = Array.from({ length: 7 }, (_, index) => {
     const date = new Date(sevenDaysAgo);
@@ -268,12 +283,12 @@ export default async function AdminDashboardPage() {
     }
   };
 
-  blogDates.forEach((item: any) => bump(item.createdAt, "content"));
-  newsDates.forEach((item: any) => bump(item.createdAt, "content"));
-  projectDates.forEach((item: any) => bump(item.createdAt, "content"));
-  pageDates.forEach((item: any) => bump(item.updatedAt, "content"));
-  contactDates.forEach((item: any) => bump(item.createdAt, "inquiries"));
-  interestDates.forEach((item: any) => bump(item.createdAt, "inquiries"));
+  safeBlogDates.forEach((item: any) => bump(item.createdAt, "content"));
+  safeNewsDates.forEach((item: any) => bump(item.createdAt, "content"));
+  safeProjectDates.forEach((item: any) => bump(item.createdAt, "content"));
+  safePageDates.forEach((item: any) => bump(item.updatedAt, "content"));
+  safeContactDates.forEach((item: any) => bump(item.createdAt, "inquiries"));
+  safeInterestDates.forEach((item: any) => bump(item.createdAt, "inquiries"));
 
   const chartData = days.map((day) => bucketMap.get(day.key)!);
 
@@ -281,7 +296,7 @@ export default async function AdminDashboardPage() {
     ActivityItem & { createdAt: Date }
   > = [];
 
-  auditRows.forEach((row: any) => {
+  safeAuditRows.forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "audit",
@@ -295,7 +310,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  contactRows.forEach((row: any) => {
+  safeContactRows.forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "contact",
@@ -307,7 +322,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  interestRows.forEach((row: any) => {
+  safeInterestRows.forEach((row: any) => {
     const projectTitle =
       typeof row.projectId === "object" && row.projectId?.title
         ? row.projectId.title
@@ -323,7 +338,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  blogRows.forEach((row: any) => {
+  safeBlogRows.forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "blog",
@@ -335,7 +350,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  newsRows.forEach((row: any) => {
+  safeNewsRows.forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "news",
@@ -347,7 +362,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  projectRows.forEach((row: any) => {
+  safeProjectRows.forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "project",
@@ -359,7 +374,7 @@ export default async function AdminDashboardPage() {
     });
   });
 
-  userRows.slice(0, 6).forEach((row: any) => {
+  safeUserRows.slice(0, 6).forEach((row: any) => {
     activities.push({
       id: row._id.toString(),
       type: "user",
@@ -376,7 +391,7 @@ export default async function AdminDashboardPage() {
     .slice(0, 10)
     .map(({ createdAt, ...item }) => item);
 
-  const usersForManagement = userRows.map((user: any) => ({
+  const usersForManagement = safeUserRows.map((user: any) => ({
     id: user._id.toString(),
     name: user.name,
     email: user.email,
@@ -384,7 +399,7 @@ export default async function AdminDashboardPage() {
     createdAt: user.createdAt ? user.createdAt.toISOString() : null,
   }));
 
-  const pagesForManagement = pageRows.map((row: any) => ({
+  const pagesForManagement = safePageRows.map((row: any) => ({
     pageName: row.pageName,
     createdAt: row.createdAt ? row.createdAt.toISOString() : null,
     updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
@@ -601,8 +616,8 @@ export default async function AdminDashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {contactRows.length ? (
-                    contactRows.map((row: any) => (
+                  {safeContactRows.length ? (
+                    safeContactRows.map((row: any) => (
                       <TableRow key={row._id.toString()}>
                         <TableCell className="font-medium">{row.name}</TableCell>
                         <TableCell className="text-muted-foreground">
@@ -646,8 +661,8 @@ export default async function AdminDashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {interestRows.length ? (
-                    interestRows.map((row: any) => {
+                  {safeInterestRows.length ? (
+                    safeInterestRows.map((row: any) => {
                       const projectTitle =
                         typeof row.projectId === "object" &&
                         row.projectId?.title
@@ -709,8 +724,8 @@ export default async function AdminDashboardPage() {
               <CardDescription>Newest posts created.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {blogRows.length ? (
-                blogRows.map((row: any) => (
+              {safeBlogRows.length ? (
+                safeBlogRows.map((row: any) => (
                   <div
                     key={row._id.toString()}
                     className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-b-0 last:pb-0"
@@ -740,8 +755,8 @@ export default async function AdminDashboardPage() {
               <CardDescription>Latest company updates.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {newsRows.length ? (
-                newsRows.map((row: any) => (
+              {safeNewsRows.length ? (
+                safeNewsRows.map((row: any) => (
                   <div
                     key={row._id.toString()}
                     className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-b-0 last:pb-0"
@@ -769,8 +784,8 @@ export default async function AdminDashboardPage() {
               <CardDescription>Newest listings created.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {projectRows.length ? (
-                projectRows.map((row: any) => (
+              {safeProjectRows.length ? (
+                safeProjectRows.map((row: any) => (
                   <div
                     key={row._id.toString()}
                     className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-b-0 last:pb-0"
@@ -800,8 +815,8 @@ export default async function AdminDashboardPage() {
               <CardDescription>Available service offerings.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {serviceRows.length ? (
-                serviceRows.map((row: any) => (
+              {safeServiceRows.length ? (
+                safeServiceRows.map((row: any) => (
                   <div
                     key={row._id.toString()}
                     className="flex items-start justify-between gap-4 border-b border-border pb-3 last:border-b-0 last:pb-0"
@@ -841,8 +856,8 @@ export default async function AdminDashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {pageRows.length ? (
-                    pageRows.slice(0, 5).map((row: any) => (
+                  {safePageRows.length ? (
+                    safePageRows.slice(0, 5).map((row: any) => (
                       <TableRow key={row._id.toString()}>
                         <TableCell className="font-medium">
                           {row.pageName}
@@ -880,8 +895,8 @@ export default async function AdminDashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {auditRows.length ? (
-                    auditRows.map((row: any) => (
+                  {safeAuditRows.length ? (
+                    safeAuditRows.map((row: any) => (
                       <TableRow key={row._id.toString()}>
                         <TableCell className="font-medium">
                           {String(row.action).toUpperCase()}

@@ -28,8 +28,9 @@ function makeExcerpt(content: string, length = 140) {
 export default async function NewsPage() {
   await connectToDatabase();
   const newsItems = await News.find().sort({ createdAt: -1 }).lean();
+  const safeNewsItems = Array.isArray(newsItems) ? newsItems : [];
 
-  const items = newsItems.map((item: any) => ({
+  const items = safeNewsItems.map((item: any) => ({
     id: item._id.toString(),
     title: item.title,
     excerpt: makeExcerpt(item.content || ""),

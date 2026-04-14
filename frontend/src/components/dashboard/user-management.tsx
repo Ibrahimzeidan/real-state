@@ -30,7 +30,7 @@ export type UserRow = {
 };
 
 type UserManagementProps = {
-  users: UserRow[];
+  users?: UserRow[];
   currentUserId: string;
 };
 
@@ -43,7 +43,8 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 });
 
 export function UserManagement({ users, currentUserId }: UserManagementProps) {
-  const [items, setItems] = useState<UserRow[]>(users);
+  const safeUsers = Array.isArray(users) ? users : [];
+  const [items, setItems] = useState<UserRow[]>(safeUsers);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const selfEditDisabled = "Admin access is reserved for the admin account.";
@@ -86,7 +87,7 @@ export function UserManagement({ users, currentUserId }: UserManagementProps) {
 
   const rows = useMemo(
     () =>
-      items.map((item) => ({
+      (Array.isArray(items) ? items : []).map((item) => ({
         ...item,
         createdLabel: item.createdAt
           ? dateFormatter.format(new Date(item.createdAt))

@@ -44,8 +44,10 @@ const colorMap: Record<ActivityItem["type"], string> = {
   audit: "bg-emerald-500/10 text-emerald-600",
 }
 
-export function RecentActivity({ activities }: { activities: ActivityItem[] }) {
-  if (!activities.length) {
+export function RecentActivity({ activities }: { activities?: ActivityItem[] }) {
+  const safeActivities = Array.isArray(activities) ? activities : []
+
+  if (!safeActivities.length) {
     return (
       <div className="text-sm text-muted-foreground">
         No recent activity yet.
@@ -59,7 +61,7 @@ export function RecentActivity({ activities }: { activities: ActivityItem[] }) {
       <div className="absolute left-5 top-0 bottom-0 w-px bg-border" />
       
       <div className="space-y-6">
-        {activities.map((activity) => {
+        {safeActivities.map((activity) => {
           const Icon = iconMap[activity.type] ?? FileText
           const color = colorMap[activity.type] ?? "bg-muted text-muted-foreground"
           return (

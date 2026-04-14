@@ -25,8 +25,9 @@ function getDetails(details: unknown): ProjectDetails {
 export default async function ProjectsPage() {
   await connectToDatabase();
   const projects = await Project.find().sort({ createdAt: -1 }).lean();
+  const safeProjects = Array.isArray(projects) ? projects : [];
 
-  const items = projects.map((project: any) => {
+  const items = safeProjects.map((project: any) => {
     const details = getDetails(project.details);
     const sqftValue =
       typeof details.sqft === "number"

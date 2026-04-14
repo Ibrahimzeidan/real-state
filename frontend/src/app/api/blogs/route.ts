@@ -48,9 +48,10 @@ export async function GET(req: NextRequest) {
       Blog.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Blog.countDocuments(filter),
     ]);
+    const safeItems = Array.isArray(items) ? items : [];
 
     return NextResponse.json({
-      data: items.map(normalizeDoc),
+      data: safeItems.map(normalizeDoc),
       page,
       limit,
       total,

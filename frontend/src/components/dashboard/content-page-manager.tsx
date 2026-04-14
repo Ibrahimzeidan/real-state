@@ -46,7 +46,7 @@ type PagePayload = PageSummary & {
 };
 
 type ContentPageManagerProps = {
-  initialPages: PageSummary[];
+  initialPages?: PageSummary[];
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
@@ -100,8 +100,9 @@ function isValidPageName(value: string) {
 export function ContentPageManager({
   initialPages,
 }: ContentPageManagerProps) {
-  const [pages, setPages] = useState<PageSummary[]>(sortPages(initialPages));
-  const [selectedPage, setSelectedPage] = useState<string>(initialPages[0]?.pageName ?? "");
+  const safeInitialPages = Array.isArray(initialPages) ? initialPages : [];
+  const [pages, setPages] = useState<PageSummary[]>(sortPages(safeInitialPages));
+  const [selectedPage, setSelectedPage] = useState<string>(safeInitialPages[0]?.pageName ?? "");
   const [editorValue, setEditorValue] = useState<string>('{\n  \n}');
   const [newPageName, setNewPageName] = useState("");
   const [newPageContent, setNewPageContent] = useState('{\n  \n}');

@@ -23,6 +23,7 @@ const iconPool = [Home, Key, TrendingUp, Building2, Users, FileText, Search, Cam
 export default async function ServicesPage() {
   await connectToDatabase();
   const services = await Service.find().sort({ createdAt: -1 }).lean();
+  const safeServices = Array.isArray(services) ? services : [];
 
   return (
     <main>
@@ -46,9 +47,9 @@ export default async function ServicesPage() {
       {/* Services Grid */}
       <section className="py-20 lg:py-28 lux-section relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          {services.length ? (
+          {safeServices.length ? (
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {services.map((service: any, index: number) => {
+              {safeServices.map((service: any, index: number) => {
                 const Icon = iconPool[index % iconPool.length];
                 return (
                   <div
