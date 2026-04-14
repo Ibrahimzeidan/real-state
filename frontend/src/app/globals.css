@@ -76,7 +76,7 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 80);
   --sidebar-border: oklch(0.35 0.04 145);
   --sidebar-ring: oklch(0.65 0.14 45);
-  --font-sans: var(--font-manrope), 'Manrope', sans-serif;
+  --font-sans: 'Manrope', sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
 }
 
@@ -151,13 +151,13 @@
   --sidebar-accent-foreground: oklch(0.95 0.01 80);
   --sidebar-border: oklch(0.32 0.02 145);
   --sidebar-ring: oklch(0.7 0.14 45);
-  --font-sans: var(--font-manrope), 'Manrope', sans-serif;
+  --font-sans: 'Manrope', sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
 }
 
 @theme inline {
-  --font-sans: var(--font-manrope), 'Manrope', sans-serif;
-  --font-serif: var(--font-cormorant), 'Cormorant Garamond', serif;
+  --font-sans: 'Manrope', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
